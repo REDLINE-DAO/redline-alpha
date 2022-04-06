@@ -1,0 +1,9 @@
+#!/bin/sh
+
+echo "sending" $1 $2
+export STARKNET_NETWORK=alpha-goerli
+starknet invoke \
+    --address $2 \
+    --abi ../cairo/artifacts/abis/oracles.json \
+    --function update_weather \
+    --inputs 0 0 $1
