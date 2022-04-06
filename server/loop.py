@@ -1,7 +1,7 @@
 import time
 import subprocess
 
-subprocess.call(['python', 'oracles.py'])
-# while True:
-#     time.sleep(20)
-#     print("end")
+while True:
+    subprocess.call(['python', 'oracles.py'])
+    time.sleep(60 * 15)
+    # print("end")
