@@ -3,7 +3,7 @@
 echo "sending" $1 $2 $3
 source ~/cairo_venv/bin/activate
 export STARKNET_NETWORK=alpha-goerli
-starknet invoke \
+/root/cairo_venv/bin/starknet invoke \
     --address $1 \
     --abi ../cairo/artifacts/abis/oracles.json \
     --function update_all \
