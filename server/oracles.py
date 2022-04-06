@@ -47,7 +47,7 @@ dirname = os.path.dirname(os.path.realpath(__file__))
 weather_exec = os.path.join(dirname, 'weather.sh')
 random_exec = os.path.join(dirname, 'random.sh')
 # all_exec = os.path.join(dirname, 'all.sh')
-all_exec = "root/redline-alpha/server/all.sh"
+all_exec = "/root/redline-alpha/server/all.sh"
 
 # update all
 all_proc = subprocess.Popen([all_exec, contract, str(randomint), str(weather_id)])
