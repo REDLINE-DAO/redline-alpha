@@ -9,7 +9,7 @@ import subprocess
 dotenv_path = join(dirname(__file__), '.env')
 load_dotenv(dotenv_path)
 
-contract="0x03e588152e6eb5b17ed122174baf6f524458cb17916c6e1b97ca67641c009476"
+contract="0x02cdd6022c4a03524e990011ee5d06f865cae5da2e99f21e3d6e50991fa819d9"
 
 weatherAPI = os.environ.get("WEATHER_API")
 coords = {
