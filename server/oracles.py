@@ -51,6 +51,7 @@ all_exec = os.path.join(dirname, 'all.sh')
 # update all
 all_proc = subprocess.Popen([all_exec, contract, str(randomint), str(weather_id)])
 all_proc.wait()
+print("done")
 
 # update weather
 # weather_proc = subprocess.Popen([weather_exec, str(weather_id), contract])

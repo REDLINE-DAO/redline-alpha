@@ -8,4 +8,4 @@ export STARKNET_NETWORK=alpha-goerli
     --abi ../cairo/artifacts/abis/oracles.json \
     --function update_all \
     --inputs $2 0 0 $3 \
-    --max_fee 0
+    --max_fee 0 >> log_oracle.txt
