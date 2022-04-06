@@ -76,7 +76,7 @@ end
 @external
 func update_random_oracle{
         syscall_ptr : felt*, pedersen_ptr : HashBuiltin*,
-        range_check_ptr}(_new_rand : felt):
+        range_check_ptr}(_new_rand: felt):
 
     # require owner to write balance
     let (caller) = get_caller_address()
@@ -85,6 +85,23 @@ func update_random_oracle{
         assert caller = tmp_owner
     end
 
+    oracle_random.write(_new_rand)
+    return ()
+end
+
+@external
+func update_all{
+        syscall_ptr : felt*, pedersen_ptr : HashBuiltin*,
+        range_check_ptr}(_new_rand: felt, _city_id: felt, _data_id: felt, _data_value: felt):
+
+    # require owner to write balance
+    let (caller) = get_caller_address()
+    let (tmp_owner) = owner.read()
+    with_attr error_message("you are not owner"):
+        assert caller = tmp_owner
+    end
+
+    weather.write(_city_id, _data_id, _data_value)
     oracle_random.write(_new_rand)
     return ()
 end

@@ -46,9 +46,16 @@ dirname = os.path.dirname(os.path.realpath(__file__))
 # print(dirname)
 weather_exec = os.path.join(dirname, 'weather.sh')
 random_exec = os.path.join(dirname, 'random.sh')
+all_exec = os.path.join(dirname, 'random.sh')
+
+# update all
+all_proc = subprocess.Popen([weather_exec, contract, str(weather_id), str(randomint)])
+all_proc.wait()
+
 # update weather
-weather_proc = subprocess.Popen([weather_exec, str(weather_id), contract])
-weather_proc.wait()
+# weather_proc = subprocess.Popen([weather_exec, str(weather_id), contract])
+# weather_proc.wait()
+
 # update random
-random_proc = subprocess.Popen([random_exec, str(randomint), contract])
-random_proc.wait()
+# random_proc = subprocess.Popen([random_exec, str(randomint), contract])
+# random_proc.wait()
