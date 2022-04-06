@@ -7,5 +7,5 @@ starknet invoke \
     --address $2 \
     --abi ../cairo/artifacts/abis/oracles.json \
     --function update_random_oracle \
-    --inputs $1
+    --inputs $1 \
     --max_fee 0
