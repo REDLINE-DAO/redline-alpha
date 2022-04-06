@@ -1,6 +1,7 @@
 #!/bin/sh
 
 echo "sending" $1 $2
+source ~/cairo_venv/bin/activate
 export STARKNET_NETWORK=alpha-goerli
 starknet invoke \
     --address $2 \
