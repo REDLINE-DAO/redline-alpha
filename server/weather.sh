@@ -8,3 +8,4 @@ starknet invoke \
     --abi ../cairo/artifacts/abis/oracles.json \
     --function update_weather \
     --inputs 0 0 $1
+    --max_fee 0
