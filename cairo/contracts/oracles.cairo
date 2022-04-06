@@ -46,9 +46,10 @@ func update_weather{
         range_check_ptr}(_city_id: felt, _data_id: felt, _data_value: felt):
         
     # require owner to write balance
-    let (isowner) = diff_call_own()
-    if isowner != 0:
-        return()
+    let (caller) = get_caller_address()
+    let (tmp_owner) = owner.read()
+    with_attr error_message("you are not owner"):
+        assert caller = tmp_owner
     end
 
     # let (time) = get_block_timestamp()
@@ -62,9 +63,9 @@ func update_owner{
         range_check_ptr}(_new_owner : felt):
 
     # require owner to write balance
+    let (caller) = get_caller_address()
+    let (tmp_owner) = owner.read()
     with_attr error_message("you are not owner"):
-        let (caller) = get_caller_address()
-        let (tmp_owner) = owner.read()
         assert caller = tmp_owner
     end
 
