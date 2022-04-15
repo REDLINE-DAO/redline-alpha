@@ -9,7 +9,7 @@ from starkware.cairo.common.hash import hash2
 from starkware.cairo.common.bitwise import bitwise_and
 
 
-# city_id: 0: singapore, 1: monument valley
+# city_id: 0: singapore, 1: monument valley, 2: cairo
 
 # data_id
 #  0 -> weather id https://openweathermap.org/weather-conditions#Weather-Condition-Codes-2

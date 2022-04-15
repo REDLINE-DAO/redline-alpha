@@ -1,6 +1,6 @@
 #!/bin/sh
 
-echo "sending" $1 $2 $3
+echo "sending" $1 $2 $3 $4
 source ~/cairo_venv/bin/activate
 export STARKNET_NETWORK=alpha-goerli
 export STARKNET_WALLET="starkware.starknet.wallets.open_zeppelin.OpenZeppelinAccount"
@@ -11,5 +11,5 @@ export STARKNET_WALLET="starkware.starknet.wallets.open_zeppelin.OpenZeppelinAcc
     --address $1 \
     --abi ../cairo/artifacts/abis/oracles.json \
     --function update_all \
-    --inputs $2 0 0 $3 \
+    --inputs $2 $4 0 $3 \
     --max_fee 0 #>> log_oracle.txt

@@ -13,13 +13,34 @@ contract="0x033c33e6756c59831ee773996c09090a16d68298cc3f1b65f9949672c7783b7f"
 
 weatherAPI = os.environ.get("WEATHER_API")
 coords = {
-    'singapore': [1, 103],
-    'monument valley': [37, 110]
+    'singapore': [1.30, 103.82],
+    'monument valley': [36.98, -110.12],
+    'cairo': [29.91, 31.13]
+}
+cities = {
+    '0': {
+        'name': 'singapore',
+        'coord': [1.30, 103.82],
+    },
+    '1': {
+        'name': 'monument valley',
+        'coord': [36.98, -110.12]
+    },
+    '2': {
+        'name': 'cairo',
+        'coord': [29.91, 31.13]
+    }
 }
 
+# TODO change to https://www.accuweather.com/en/sg/singapore/300597/current-weather/300597
 # https://openweathermap.org/current
 
-query = f'https://api.openweathermap.org/data/2.5/weather?lat={coords["singapore"][0]}&lon={coords["singapore"][1]}&appid={weatherAPI}&units=metric'
+cityid = randint(0, 3)
+lat = cities[f'{cityid}']['coord'][0]
+lon = cities[f'{cityid}']['coord'][1]
+print(cityid)
+
+query = f'https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={weatherAPI}&units=metric'
 print(query)
 print('-----request-----')
 response = requests.get(query)
@@ -50,7 +71,7 @@ all_exec = os.path.join(dirname, 'all.sh')
 # all_exec = "/root/redline-alpha/server/all.sh"
 
 # update all
-all_proc = subprocess.Popen([all_exec, contract, str(randomint), str(weather_id)])
+all_proc = subprocess.Popen([all_exec, contract, str(randomint), str(weather_id), cityid])
 all_proc.wait()
 print("done")
 
