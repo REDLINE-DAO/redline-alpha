@@ -3,3 +3,4 @@ server/.env
 
 cairo/artifacts
 *.pyc
+.DS_Store
