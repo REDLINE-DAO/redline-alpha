@@ -35,7 +35,7 @@ cities = {
 # TODO change to https://www.accuweather.com/en/sg/singapore/300597/current-weather/300597
 # https://openweathermap.org/current
 
-cityid = randint(0, 3)
+cityid = randint(0, 2)
 lat = cities[f'{cityid}']['coord'][0]
 lon = cities[f'{cityid}']['coord'][1]
 print(cityid)
