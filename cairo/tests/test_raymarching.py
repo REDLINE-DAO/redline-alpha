@@ -1,3 +1,4 @@
+from ast import For
 import os
 import pytest
 from PIL import Image
@@ -48,17 +49,29 @@ async def test_pixels():
     # print(str(size.result.res))
 
 
-
-
-    """Test render."""
-    screen = await contract.get_image().call()
-    f = open("image.txt", "w")
-    f.write(str(screen.result.pixels))
+    print('--------------------- render one by one')
+    f = open("image2.txt", "w")
+    f.write(str(""))
     f.close()
+    for x in range(size.result.res):
+        for y in range(size.result.res):
+            color = await contract.main_image(x, y).call()
+            # print(f'{x}, {y}: {color.result.color}')
+            f = open("image2.txt", "a")
+            f.write(str(color.result.color))
+            f.write(", ")
+            f.close()
+
+
+    print('--------------------- render at once')
+    # screen = await contract.get_image().call()
+    # f = open("image.txt", "w")
+    # f.write(str(screen.result.pixels))
+    # f.close()
     
-    image_size = size.result.res
-    image_out = Image.new('L',[image_size, image_size])
-    image_out.putdata(screen.result.pixels)
-    image_out.save('test_out.png')
+    # image_size = size.result.res
+    # image_out = Image.new('L',[image_size, image_size])
+    # image_out.putdata(screen.result.pixels)
+    # image_out.save('test_out.png')
     
-    assert screen
+    # assert screen

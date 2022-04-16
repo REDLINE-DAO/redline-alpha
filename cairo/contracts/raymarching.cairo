@@ -45,11 +45,11 @@ from Math64x61 import (
 
 # canvas size 7 and 8 rays work
 # canvas size 8 and 6 rays work
-const size = 7
+const size = 16
 const color_range = 256
 
 # raymarching
-const ray_count = 8
+const ray_count = 24
 
 # const Math64x61_BOUND = 2 ** 125
 const quart = 576460752303423488
@@ -275,7 +275,7 @@ func raymarch2{range_check_ptr}(i: felt, eye: (felt, felt, felt), direction: (fe
         let (pos) = Vec64x61_add(pos_mul, eye)
         let (dist_to_closest) = sd_sphere(pos, quart)
 
-        let (thou) = Math64x61_fromFelt(100) # 1000
+        let (thou) = Math64x61_fromFelt(1000) # 1000
         let (ray_epsilon) = Math64x61_div(one, thou)
         let (temp) = is_le(dist_to_closest, ray_epsilon)
         # we hit something, stop recursion, return travel_distance
@@ -294,6 +294,7 @@ func raymarch2{range_check_ptr}(i: felt, eye: (felt, felt, felt), direction: (fe
     return (travel_distance)
 end
 
+@view
 func main_image{range_check_ptr}(x: felt, y: felt) -> (color: felt):
     alloc_locals
     # let (zero) = Math64x61_fromFelt(0)
