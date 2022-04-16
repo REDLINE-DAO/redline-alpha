@@ -51,7 +51,7 @@ const color_range = 256
 # raymarching
 const ray_count = 8
 
-const Math64x61_BOUND = 2 ** 125
+# const Math64x61_BOUND = 2 ** 125
 const quart = 576460752303423488
 const one = 2305843009213693952
 const two = 4611686018427387904
