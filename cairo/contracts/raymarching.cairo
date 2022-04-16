@@ -43,14 +43,18 @@ from Math64x61 import (
 # )
 
 
-# const time = 0
-const size = 7 # canvas size 10 and 16 rays work
+# canvas size 7 and 8 rays work
+# canvas size 8 and 6 rays work
+const size = 7
 const color_range = 256
 
 # raymarching
 const ray_count = 8
 
 const Math64x61_BOUND = 2 ** 125
+const quart = 576460752303423488
+const one = 2305843009213693952
+const two = 4611686018427387904
 
 # Vector functions
 
@@ -60,13 +64,26 @@ func get_size{}() -> (res: felt):
     return (res)
 end
 
-
-func Math64x61_mod {range_check_ptr} (x: felt, y: felt) -> (res: felt):
-    let (int_val, mod_val) = signed_div_rem(x, y, Math64x61_BOUND)
-    let res = mod_val
-    # Math64x61_assert64x61(res)
+@view
+func get_const{range_check_ptr}(a: felt) -> (res: felt):
+    let (res) = Math64x61_fromFelt(a)
     return (res)
 end
+
+@view
+func get_const_div{range_check_ptr}(a: felt, b: felt) -> (res: felt):
+    let (a64) = Math64x61_fromFelt(a)
+    let (b64) = Math64x61_fromFelt(b)
+    let (res) = Math64x61_div(a64, b64)
+    return (res)
+end
+
+
+# func Math64x61_mod {range_check_ptr} (x: felt, y: felt) -> (res: felt):
+#     let (int_val, mod_val) = signed_div_rem(x, y, Math64x61_BOUND)
+#     let res = mod_val
+#     return (res)
+# end
 
 @view
 func Vec64x61_len{range_check_ptr}(a: (felt, felt, felt)) -> (res: felt):
@@ -78,24 +95,24 @@ func Vec64x61_len{range_check_ptr}(a: (felt, felt, felt)) -> (res: felt):
     return (res)
 end
 
-@view
-func test_vec_len{range_check_ptr}(a: (felt, felt, felt)) -> (res: felt):
-    let (x) = Math64x61_fromFelt(a[0])
-    let (y) = Math64x61_fromFelt(a[1])
-    let (z) = Math64x61_fromFelt(a[2])
-    let (length) = Vec64x61_len((x, y, z))
-    let (res) = Math64x61_toFelt(length)
-    return (res)
-end
+# @view
+# func test_vec_len{range_check_ptr}(a: (felt, felt, felt)) -> (res: felt):
+#     let (x) = Math64x61_fromFelt(a[0])
+#     let (y) = Math64x61_fromFelt(a[1])
+#     let (z) = Math64x61_fromFelt(a[2])
+#     let (length) = Vec64x61_len((x, y, z))
+#     let (res) = Math64x61_toFelt(length)
+#     return (res)
+# end
 
-@view
-func test_64{range_check_ptr}(a: felt) -> (res: felt):
-    let (a2) = Math64x61_fromFelt(a)
-    let (min) = Math64x61_fromFelt(25)
-    let (sub) = Math64x61_add(a2, min)
-    let (res) = Math64x61_toFelt(sub)
-    return (res)
-end
+# @view
+# func test_64{range_check_ptr}(a: felt) -> (res: felt):
+#     let (a2) = Math64x61_fromFelt(a)
+#     let (min) = Math64x61_fromFelt(25)
+#     let (sub) = Math64x61_add(a2, min)
+#     let (res) = Math64x61_toFelt(sub)
+#     return (res)
+# end
 
 @view
 func Vec64x61_normalize{range_check_ptr}(a: (felt, felt, felt)) -> (res: (felt, felt, felt)):
@@ -107,14 +124,14 @@ func Vec64x61_normalize{range_check_ptr}(a: (felt, felt, felt)) -> (res: (felt, 
     return ((x, y, z))
 end
 
-@view
-func Vec64x61_mod{range_check_ptr}(a: (felt, felt, felt), b: (felt, felt, felt)) -> (res: (felt, felt, felt)):
-    alloc_locals
-    let (x) = Math64x61_mod(a[0], b[0])
-    let (y) = Math64x61_div(a[1], b[1])
-    let (z) = Math64x61_div(a[2], b[2])
-    return ((x, y, z))
-end
+# @view
+# func Vec64x61_mod{range_check_ptr}(a: (felt, felt, felt), b: (felt, felt, felt)) -> (res: (felt, felt, felt)):
+#     alloc_locals
+#     let (x) = Math64x61_mod(a[0], b[0])
+#     let (y) = Math64x61_div(a[1], b[1])
+#     let (z) = Math64x61_div(a[2], b[2])
+#     return ((x, y, z))
+# end
 
 @view
 func Vec64x61_abs{range_check_ptr}(a: (felt, felt, felt)) -> (res: (felt, felt, felt)):
@@ -139,29 +156,29 @@ func sd_sphere{range_check_ptr}(p: (felt, felt, felt), s: felt) -> (res: felt):
     return (res)
 end
 
-func sd_box{range_check_ptr}(p: (felt, felt, felt), b: (felt, felt, felt)) -> (res: felt):
-    alloc_locals
-    let (zero) = Math64x61_fromFelt(0)
-    let (one) = Math64x61_fromFelt(1)
-    let (four) = Math64x61_fromFelt(40000000000) # 40000000000 works
+# func sd_box{range_check_ptr}(p: (felt, felt, felt), b: (felt, felt, felt)) -> (res: felt):
+#     alloc_locals
+#     let (zero) = Math64x61_fromFelt(0)
+#     let (one) = Math64x61_fromFelt(1)
+#     let (four) = Math64x61_fromFelt(40000000000) # 40000000000 works
 
-    let (p_abs) = Vec64x61_abs(p)
-    let (d) = Vec64x61_sub(p_abs, b)
+#     let (p_abs) = Vec64x61_abs(p)
+#     let (d) = Vec64x61_sub(p_abs, b)
 
-    let (r0) = Math64x61_max(d[1], d[2])
-    let (r1) = Math64x61_max(d[0], r0)
-    let (r2) = Math64x61_min(r1, zero)
+#     let (r0) = Math64x61_max(d[1], d[2])
+#     let (r1) = Math64x61_max(d[0], r0)
+#     let (r2) = Math64x61_min(r1, zero)
 
-    let (r3) = Vec64x61_max(d, (zero, zero, zero))
-    let (quart) = Math64x61_div(one, four)
-    let (r4_1) = Vec64x61_mul(r3, quart)
-    let (r4) = Vec64x61_len(r4_1)
-    let (r4_2) = Math64x61_mul(r4, four)
+#     let (r3) = Vec64x61_max(d, (zero, zero, zero))
+#     let (quart) = Math64x61_div(one, four)
+#     let (r4_1) = Vec64x61_mul(r3, quart)
+#     let (r4) = Vec64x61_len(r4_1)
+#     let (r4_2) = Math64x61_mul(r4, four)
 
-    let (res) = Math64x61_add(r2, r4_2)
+#     let (res) = Math64x61_add(r2, r4_2)
 
-    return (res)
-end
+#     return (res)
+# end
 
 # func op_rep{range_check_ptr}(p: (felt, felt, felt), c: (felt, felt, felt)) -> (res: felt):
 #     alloc_locals
@@ -221,10 +238,10 @@ end
 
 func raymarch2{range_check_ptr}(i: felt, eye: (felt, felt, felt), direction: (felt, felt, felt), travel_distance: felt) -> (res: felt):
     alloc_locals
-    let (one) = Math64x61_fromFelt(1)
-    let (two) = Math64x61_fromFelt(2)
-    let (half) = Math64x61_div(one, two)
-    let (quart) = Math64x61_div(half, two)
+    # let (one) = Math64x61_fromFelt(1)
+    # let (two) = Math64x61_fromFelt(2)
+    # let (half) = Math64x61_div(one, two)
+    # let (quart) = Math64x61_div(half, two)
 
     # we ran out of rays
     # if i == 0:
@@ -279,10 +296,10 @@ end
 
 func main_image{range_check_ptr}(x: felt, y: felt) -> (color: felt):
     alloc_locals
-    let (zero) = Math64x61_fromFelt(0)
-    let (one) = Math64x61_fromFelt(1)
-    let (two) = Math64x61_fromFelt(2)
-    let (half) = Math64x61_div(one, two)
+    # let (zero) = Math64x61_fromFelt(0)
+    # let (one) = Math64x61_fromFelt(1)
+    # let (two) = Math64x61_fromFelt(2)
+    # let (half) = Math64x61_div(one, two)
     let (size64) = Math64x61_fromFelt(size)
     let (color_range64) = Math64x61_fromFelt(color_range)
 
@@ -305,14 +322,14 @@ func main_image{range_check_ptr}(x: felt, y: felt) -> (color: felt):
 
 
     # vec3 eye = vec3(0, 0, -1.);
-    let (eye_z) = Math64x61_sub(zero, one)
-    let eye = (zero, zero, eye_z)
+    let (eye_z) = Math64x61_sub(0, one)
+    let eye = (0, 0, eye_z)
 
     # vec3 front = vec3(0.,0.,1.)
-    let front = (zero, zero, one)
+    # let front = (0, 0, one)
     # let front = (half, half, one)
-    let right = (one, zero, zero) 
-    let up = (zero, one, zero)
+    # let right = (one, 0, 0) 
+    # let up = (0, one, 0)
 
     let (ray_direction) = Vec64x61_normalize((u64_2, v64_2, one))
 
@@ -326,7 +343,7 @@ func main_image{range_check_ptr}(x: felt, y: felt) -> (color: felt):
     # raymarching loop
     # let (color_raymarch, t) = raymarch(ray_count, eye, ray, zero, zero)
     # raymarching loop v2
-    let (t) = raymarch2(ray_count, eye, ray_direction, zero)
+    let (t) = raymarch2(ray_count, eye, ray_direction, 0)
 
     # get color64 and scale to felt * color range
     let (color_scale) = Math64x61_fromFelt(1)
